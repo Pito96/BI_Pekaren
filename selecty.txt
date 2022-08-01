@@ -1,0 +1,15 @@
+SELECT c.den_v_tyzdni, z.mesto, tp.nazov_typu_peciva, SUM(p.pocet_kusov) as pocet_rozkov FROM Objednavka o JOIN D_cas c ON o.id_cas = c.id_cas
+JOIN Pecivo p ON o.id_pecivo = p.id_pecivo
+JOIN D_typ_peciva tp ON p.id_typ_peciva = tp.id_typ_peciva
+JOIN D_zakaznik z ON o.id_zakaznik = z.id_zakaznik
+WHERE c.den_v_tyzdni IN ("Monday", "Friday")
+AND tp.nazov_typu_peciva = "rozok"
+AND z.mesto = "Bratislava"
+GROUP BY c.den_v_tyzdni
+
+
+SELECT c.mesiac, dp.typ_platby, COUNT(dp.typ_platby) AS pocet_platieb, COUNT(dp.typ_platby)/(SELECT COUNT(Objednavka.id_objednavka) FROM Objednavka)*100 AS Pomer FROM Objednavka o 
+JOIN D_cas c ON o.id_cas = c.id_cas
+JOIN D_druh_platby dp ON o.id_druh_platby = dp.id_druh_platby
+WHERE c.rok = 2019
+GROUP BY c.mesiac, dp.typ_platby
